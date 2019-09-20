@@ -13,6 +13,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::namespace('Api')->group(function () {
+
+    // 未認証
+    Route::prefix('user')->group(function(){
+        Route::post('login', 'UserController@login');
+    });
+
+    // 認証必須
+    Route::middleware('auth:api')->group(function () {
+        Route::prefix('user')->group(function(){
+            Route::get('logout',function(){
+                \Auth::logout();
+                return [
+                    'success' => true,
+                    'message' => 'ログアウトしました'
+                ];
+            });
+        });
+    });
+
 });
+
