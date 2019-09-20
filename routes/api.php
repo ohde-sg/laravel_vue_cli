@@ -13,6 +13,23 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::namespace('Api')->group(function(){
+
+    Route::prefix('user')->group(function(){
+        Route::get('login','UserController@login');
+    });
+
+    Route::middleware('auth:api')->group(function(){
+        Route::prefix('user')->group(function(){
+            Route::get('logout','UserController@logout');
+        });
+
+        Route::get('check',function(){
+            return [
+                'success' => true,
+                'message' => 'Your already authorised'
+            ];
+        });
+    });
 });
+
