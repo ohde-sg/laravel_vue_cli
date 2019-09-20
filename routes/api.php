@@ -13,7 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::namespace('Api')->group(function(){
+$namespace = env('APP_DUMMY',false) ? 'ApiDummy' : 'Api';
+
+Route::namespace($namespace)->group(function(){
 
     Route::prefix('user')->group(function(){
         Route::get('login','UserController@login');
